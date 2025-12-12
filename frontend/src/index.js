@@ -211,11 +211,9 @@ const TicTacToe = () => {
         <div className="symbol-selection">
           <button className="symbol-button x-button" onClick={() => selectSymbol('X')}>
             <img src={xImage} alt="X" className="selection-symbol-image" />
-            <span className="symbol-text">Крестик</span>
           </button>
           <button className="symbol-button o-button" onClick={() => selectSymbol('O')}>
             <img src={oImage} alt="O" className="selection-symbol-image" />
-            <span className="symbol-text">Нолик</span>
           </button>
         </div>
 
