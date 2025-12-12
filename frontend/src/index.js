@@ -95,7 +95,7 @@ const TicTacToe = () => {
       notifyGameResult(gameWinner === playerSymbol);
     } else if (!newBoard.includes(null)) {
       setGameOver(true);
-      notifyGameResult(false); // Ничья
+      // Ничья - не отправляем запрос на бэкенд
     }
   };
 
@@ -144,7 +144,7 @@ const TicTacToe = () => {
       notifyGameResult(gameWinner === playerSymbol);
     } else if (!newBoard.includes(null)) {
       setGameOver(true);
-      notifyGameResult(false); // Ничья
+      // Ничья - не отправляем запрос на бэкенд
     }
   };
 
@@ -192,9 +192,7 @@ const TicTacToe = () => {
       }
     } else {
       if (isXNext) {
-        return playerSymbol === 'X' ? 'Ваш ход (X)' : 'Ход компьютера (X)';
-      } else {
-        return playerSymbol === 'O' ? 'Ваш ход (O)' : 'Ход компьютера (O)';
+        return playerSymbol === 'X' ? 'Ваш ход' : '';
       }
     }
   };
@@ -216,8 +214,6 @@ const TicTacToe = () => {
             <img src={oImage} alt="O" className="selection-symbol-image" />
           </button>
         </div>
-
-        <p className="computer-info">Вы будете играть против компьютера 🤖</p>
       </div>
     );
   }
@@ -227,8 +223,7 @@ const TicTacToe = () => {
       <div className="game-header">
         <h1>Крестики-нолики</h1>
         <div className="player-info">
-          Вы: <span className="player-symbol">{playerSymbol === 'X' ? <img src={xImage} alt="X" className="info-symbol-image" /> : <img src={oImage} alt="O" className="info-symbol-image" />}</span> |
-          Компьютер: <span className="player-symbol">{playerSymbol === 'X' ? <img src={oImage} alt="O" className="info-symbol-image" /> : <img src={xImage} alt="X" className="info-symbol-image" />}</span>
+          Вы играете за: <span className="player-symbol">{playerSymbol === 'X' ? <img src={xImage} alt="X" className="info-symbol-image" /> : <img src={oImage} alt="O" className="info-symbol-image" />}</span>
         </div>
       </div>
 
