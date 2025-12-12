@@ -1,0 +1,14 @@
+services:
+  backend:
+    env_file:
+      - ../infra/envs/backend.env
+      - ../infra/envs/backend.prod.env
+
+  bot:
+    env_file:
+      - ../infra/envs/bot.env
+
+  frontend:
+    env_file:
+      - ../infra/envs/frontend.env
+      - ../infra/envs/frontend.prod.env

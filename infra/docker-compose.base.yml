@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: tic-tac-toe-backend
+    environment:
+      - BACKEND_PORT=${BACKEND_PORT}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+    networks:
+      - tic-tac-toe-network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  bot:
+    build:
+      context: ../bot
+      dockerfile: Dockerfile
+    container_name: tic-tac-toe-bot
+    environment:
+      - BOT_POLLING=${BOT_POLLING}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+    networks:
+      - tic-tac-toe-network
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: tic-tac-toe-frontend
+    environment:
+      - FRONTEND_PORT=${FRONTEND_PORT}
+      - BACKEND_URL=${BACKEND_URL}
+    networks:
+      - tic-tac-toe-network
+    depends_on:
+      backend:
+        condition: service_healthy
+
+networks:
+  tic-tac-toe-network:
+    driver: bridge
