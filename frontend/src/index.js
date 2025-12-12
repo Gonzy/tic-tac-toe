@@ -95,7 +95,8 @@ const TicTacToe = () => {
       notifyGameResult(gameWinner === playerSymbol);
     } else if (!newBoard.includes(null)) {
       setGameOver(true);
-      // Ничья - не отправляем запрос на бэкенд
+      // Ничья - не отправляем запрос на бэкенд, так как нет эндпоинта для обработки ничьи
+      handleDraw();
     }
   };
 
@@ -144,7 +145,8 @@ const TicTacToe = () => {
       notifyGameResult(gameWinner === playerSymbol);
     } else if (!newBoard.includes(null)) {
       setGameOver(true);
-      // Ничья - не отправляем запрос на бэкенд
+      // Ничья - не отправляем запрос на бэкенд, так как нет эндпоинта для обработки ничьи
+      handleDraw();
     }
   };
 
@@ -154,12 +156,19 @@ const TicTacToe = () => {
     try {
       const endpoint = isWin ? '/win' : '/lose';
       const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:8000';
+      console.log(`Отправка запроса на бэкенд: ${endpoint}`);
       await axios.post(`${backendUrl}${endpoint}`, {
         chat_id: chatId
       });
     } catch (error) {
       console.error('Ошибка отправки результата игры:', error);
     }
+  };
+
+  const handleDraw = () => {
+    // Обработка ничьи - можно добавить логику для будущих улучшений
+    // Например, отображение сообщения о ничье или сохранение статистики
+    console.log('Игра окончилась вничью - запрос на бэкенд не отправляется');
   };
 
   const resetGame = () => {

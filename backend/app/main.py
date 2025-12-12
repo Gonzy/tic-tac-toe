@@ -30,7 +30,7 @@ class GameResult(BaseModel):
 BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 TELEGRAM_API_URL = f"https://api.telegram.org/bot{BOT_TOKEN}"
 
-def generate_promocode(length: int = 8) -> str:
+def generate_promocode(length: int = 5) -> str:
     """Генерирует промокод из 8 символов (A-Z, 0-9)"""
     characters = string.ascii_uppercase + string.digits
     return ''.join(random.choice(characters) for _ in range(length))
