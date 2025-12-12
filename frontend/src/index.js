@@ -193,17 +193,13 @@ const TicTacToe = () => {
   };
 
   const getStatus = () => {
-    if (gameOver) {
-      if (winner) {
-        return winner === playerSymbol ? 'Вы победили! 🎉' : 'Компьютер победил! 🤖';
-      } else {
-        return 'Ничья! 🤝';
-      }
-    } else {
+    if (!gameOver) {
       if (isXNext) {
         return playerSymbol === 'X' ? 'Ваш ход' : '';
       }
+      return '';
     }
+    return '';
   };
 
   // Экран выбора символа
@@ -223,6 +219,99 @@ const TicTacToe = () => {
             <img src={oImage} alt="O" className="selection-symbol-image" />
           </button>
         </div>
+      </div>
+    );
+  }
+
+  // Экран победы
+  if (gameOver && winner === playerSymbol) {
+    return (
+      <div className="game victory-screen">
+        <div className="victory-container">
+          <h1 className="victory-title">Победа!!!</h1>
+          <div className="victory-subtitle">
+            <p>Поздравляем! Ваш приз уже отправлен в телеграм-бот 🎁</p>
+          </div>
+          <button className="play-again-button" onClick={resetGame}>
+            Играть ещё
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Экран проигрыша
+  if (gameOver && winner && winner !== playerSymbol) {
+    return (
+      <div className="game">
+        <div className="game-header">
+          <h1>Крестики-нолики</h1>
+          <div className="player-info">
+            Вы играете за: <span className="player-symbol">{playerSymbol === 'X' ? <img src={xImage} alt="X" className="info-symbol-image" /> : <img src={oImage} alt="O" className="info-symbol-image" />}</span>
+          </div>
+        </div>
+
+        <div className="status">Компьютер победил! 🤖</div>
+
+        <div className="board">
+          <div className="board-row">
+            {renderSquare(0)}
+            {renderSquare(1)}
+            {renderSquare(2)}
+          </div>
+          <div className="board-row">
+            {renderSquare(3)}
+            {renderSquare(4)}
+            {renderSquare(5)}
+          </div>
+          <div className="board-row">
+            {renderSquare(6)}
+            {renderSquare(7)}
+            {renderSquare(8)}
+          </div>
+        </div>
+
+        <button className="reset-button" onClick={resetGame}>
+          Играть снова
+        </button>
+      </div>
+    );
+  }
+
+  // Экран ничьей
+  if (gameOver && !winner) {
+    return (
+      <div className="game">
+        <div className="game-header">
+          <h1>Крестики-нолики</h1>
+          <div className="player-info">
+            Вы играете за: <span className="player-symbol">{playerSymbol === 'X' ? <img src={xImage} alt="X" className="info-symbol-image" /> : <img src={oImage} alt="O" className="info-symbol-image" />}</span>
+          </div>
+        </div>
+
+        <div className="status">Ничья! 🤝</div>
+
+        <div className="board">
+          <div className="board-row">
+            {renderSquare(0)}
+            {renderSquare(1)}
+            {renderSquare(2)}
+          </div>
+          <div className="board-row">
+            {renderSquare(3)}
+            {renderSquare(4)}
+            {renderSquare(5)}
+          </div>
+          <div className="board-row">
+            {renderSquare(6)}
+            {renderSquare(7)}
+            {renderSquare(8)}
+          </div>
+        </div>
+
+        <button className="reset-button" onClick={resetGame}>
+          Играть снова
+        </button>
       </div>
     );
   }
@@ -255,12 +344,6 @@ const TicTacToe = () => {
           {renderSquare(8)}
         </div>
       </div>
-
-      {gameOver && (
-        <button className="reset-button" onClick={resetGame}>
-          Играть снова
-        </button>
-      )}
     </div>
   );
 };

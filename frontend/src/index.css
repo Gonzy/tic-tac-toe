@@ -273,3 +273,85 @@ h1 {
     font-size: 2.5rem;
   }
 }
+
+/* Стили для экрана победы */
+.victory-screen {
+  background-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.victory-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.victory-title {
+  color: #e91e63;
+  font-size: 4rem;
+  margin: 0 0 20px;
+  animation: victoryPulse 1.5s ease-in-out infinite alternate;
+}
+
+.victory-subtitle {
+  margin-bottom: 40px;
+}
+
+.victory-subtitle p {
+  font-size: 1.3rem;
+  color: #555;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.play-again-button {
+  background: linear-gradient(135deg, #e91e63, #d81b60);
+  border: none;
+  border-radius: 30px;
+  color: white;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 15px 40px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(233, 30, 99, 0.3);
+}
+
+.play-again-button:hover {
+  background: linear-gradient(135deg, #d81b60, #c2185b);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(233, 30, 99, 0.4);
+}
+
+.play-again-button:active {
+  transform: translateY(0);
+}
+
+@keyframes victoryPulse {
+  0% {
+    transform: scale(1);
+    text-shadow: 0 0 10px rgba(233, 30, 99, 0.3);
+  }
+  100% {
+    transform: scale(1.05);
+    text-shadow: 0 0 20px rgba(233, 30, 99, 0.6);
+  }
+}
+
+@media (max-width: 480px) {
+  .victory-title {
+    font-size: 3rem;
+  }
+
+  .victory-subtitle p {
+    font-size: 1.1rem;
+  }
+
+  .play-again-button {
+    font-size: 1.1rem;
+    padding: 12px 30px;
+  }
+}
