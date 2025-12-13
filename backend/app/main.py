@@ -36,13 +36,14 @@ def generate_promocode(length: int = 5) -> str:
     return ''.join(random.choice(characters) for _ in range(length))
 
 async def send_telegram_message(chat_id: int, text: str) -> Dict:
-    """Отправляет сообщение в Telegram"""
+    """Отправляет сообщение в Telegram с форматированием Markdown v2"""
     async with httpx.AsyncClient() as client:
         response = await client.post(
             f"{TELEGRAM_API_URL}/sendMessage",
             json={
                 "chat_id": chat_id,
-                "text": text
+                "text": text,
+                "parse_mode": "MarkdownV2"
             }
         )
         return response.json()
@@ -54,7 +55,7 @@ async def win(game_result: GameResult):
         raise HTTPException(status_code=500, detail="Telegram bot token not configured")
 
     promocode = generate_promocode()
-    message = f"Поздравляю с победой! Ваш промокод: {promocode}"
+    message = f"*Поздравляю с победой\\!*\n\nВаш промокод: `{promocode}`"
 
     try:
         result = await send_telegram_message(game_result.chat_id, message)
@@ -68,7 +69,7 @@ async def lose(game_result: GameResult):
     if not BOT_TOKEN:
         raise HTTPException(status_code=500, detail="Telegram bot token not configured")
 
-    message = "Не расстраивайтесь, в следующий раз повезёт больше! Попробуйте ещё раз."
+    message = "Не расстраивайтесь, в следующий раз повезёт больше\\! Попробуйте ещё раз\\."
 
     try:
         result = await send_telegram_message(game_result.chat_id, message)
