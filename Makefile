@@ -1,4 +1,4 @@
-.PHONY: dev-up dev-down prod-up prod-down clean build restart-backend restart-bot restart-frontend prod-restart-backend prod-restart-bot prod-restart-frontend
+.PHONY: dev-up dev-down prod-up prod-down clean build restart-backend restart-bot restart-frontend prod-restart-backend prod-restart-bot prod-restart-frontend prod-build-frontend prod-deploy-nginx
 
 dev-up:
 	docker compose --env-file .env -f infra/docker-compose.base.yml -f infra/docker-compose.dev.yml up --build -d
@@ -43,3 +43,19 @@ prod-restart-bot:
 
 prod-restart-frontend:
 	docker compose --env-file .env -f infra/docker-compose.base.yml -f infra/docker-compose.prod.yml restart frontend
+
+# Build frontend and copy to volume
+prod-build-frontend:
+	@echo "Сборка фронтенда для продакшена..."
+	docker compose --env-file .env -f infra/docker-compose.base.yml -f infra/docker-compose.prod.yml up --build frontend
+	docker compose --env-file .env -f infra/docker-compose.base.yml -f infra/docker-compose.prod.yml rm -f frontend
+	@echo "Фронтенд собран и готов для развертывания"
+
+# Deploy nginx configuration (for manual execution on VPS)
+prod-deploy-nginx:
+	@echo "Развертывание конфигурации nginx..."
+	@echo "Скопируйте файл infra/nginx.prod.conf в /etc/nginx/sites-enabled/tic-tac-toe"
+	@echo "Замените 'your-domain.com' на ваш домен"
+	@echo "Создайте директорию /var/www/tic-tac-toe"
+	@echo "Скопируйте содержимое ./infra/frontend-build в /var/www/tic-tac-toe"
+	@echo "Перезапустите nginx: sudo systemctl restart nginx"

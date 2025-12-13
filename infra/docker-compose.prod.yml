@@ -1,14 +1,24 @@
 services:
   backend:
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
     env_file:
       - ../infra/envs/backend.env
       - ../infra/envs/backend.prod.env
+    restart: unless-stopped
 
   bot:
     env_file:
       - ../infra/envs/bot.env
+    restart: unless-stopped
 
   frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile.prod
+    volumes:
+      - ./frontend-build:/build
     env_file:
       - ../infra/envs/frontend.env
       - ../infra/envs/frontend.prod.env
+    restart: "no"
