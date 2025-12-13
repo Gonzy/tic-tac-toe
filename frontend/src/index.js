@@ -179,6 +179,17 @@ const TicTacToe = () => {
     setWinner(null);
   };
 
+  const resetGameWithOppositeSymbol = () => {
+    const oppositeSymbol = playerSymbol === 'X' ? 'O' : 'X';
+    setPlayerSymbol(oppositeSymbol);
+    setBoard(Array(9).fill(null));
+    // X всегда ходит первым по правилам
+    setIsXNext(true);
+    setGameOver(false);
+    setWinner(null);
+    setGameStarted(true);
+  };
+
   const renderSquare = (i) => {
     return (
       <button
@@ -193,13 +204,19 @@ const TicTacToe = () => {
   };
 
   const getStatus = () => {
-    if (!gameOver) {
-      if (isXNext) {
-        return playerSymbol === 'X' ? 'Ваш ход' : '';
+    if (gameOver) {
+      if (winner) {
+        return winner === playerSymbol ? 'Вы победили! 🎉' : 'Компьютер победил! 🤖';
+      } else {
+        return 'Ничья! 🤝';
       }
-      return '';
+    } else {
+      if (isXNext) {
+        return playerSymbol === 'X' ? 'Ваш ход (X)' : 'Ход компьютера (X)';
+      } else {
+        return playerSymbol === 'O' ? 'Ваш ход (O)' : 'Ход компьютера (O)';
+      }
     }
-    return '';
   };
 
   // Экран выбора символа
@@ -225,16 +242,24 @@ const TicTacToe = () => {
 
   // Экран победы
   if (gameOver && winner === playerSymbol) {
+    const oppositeSymbol = playerSymbol === 'X' ? 'O' : 'X';
     return (
       <div className="game victory-screen">
         <div className="victory-container">
           <h1 className="victory-title">Победа!!!</h1>
           <div className="victory-subtitle">
-            <p>Поздравляем! Ваш приз уже отправлен в телеграм-бот 🎁</p>
+            <p className="gift-text">Поздравляем!</p>
+            <p className="gift-text">Ваш приз уже отправлен в телеграм-бот</p>
+            <span className="gift-icon">🎁</span>
           </div>
-          <button className="play-again-button" onClick={resetGame}>
-            Играть ещё
-          </button>
+          <div className="buttons-container">
+            <button className="play-again-button" onClick={resetGame}>
+              Играть ещё
+            </button>
+            <button className="play-as-symbol-button" onClick={resetGameWithOppositeSymbol}>
+              Сыграть за <img src={oppositeSymbol === 'X' ? xImage : oImage} alt={oppositeSymbol} className="button-symbol-image" />
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -242,76 +267,48 @@ const TicTacToe = () => {
 
   // Экран проигрыша
   if (gameOver && winner && winner !== playerSymbol) {
+    const oppositeSymbol = playerSymbol === 'X' ? 'O' : 'X';
     return (
-      <div className="game">
-        <div className="game-header">
-          <h1>Крестики-нолики</h1>
-          <div className="player-info">
-            Вы играете за: <span className="player-symbol">{playerSymbol === 'X' ? <img src={xImage} alt="X" className="info-symbol-image" /> : <img src={oImage} alt="O" className="info-symbol-image" />}</span>
+      <div className="game defeat-screen">
+        <div className="defeat-container">
+          <h1 className="defeat-title">Поражение!</h1>
+          <div className="defeat-subtitle">
+            <p>Компьютер победил в этот раз 🤖</p>
+            <p>Попробуйте ещё раз, удача на вашей стороне!</p>
+          </div>
+          <div className="buttons-container">
+            <button className="play-again-button" onClick={resetGame}>
+              Играть ещё
+            </button>
+            <button className="play-as-symbol-button" onClick={resetGameWithOppositeSymbol}>
+              Сыграть за <img src={oppositeSymbol === 'X' ? xImage : oImage} alt={oppositeSymbol} className="button-symbol-image" />
+            </button>
           </div>
         </div>
-
-        <div className="status">Компьютер победил! 🤖</div>
-
-        <div className="board">
-          <div className="board-row">
-            {renderSquare(0)}
-            {renderSquare(1)}
-            {renderSquare(2)}
-          </div>
-          <div className="board-row">
-            {renderSquare(3)}
-            {renderSquare(4)}
-            {renderSquare(5)}
-          </div>
-          <div className="board-row">
-            {renderSquare(6)}
-            {renderSquare(7)}
-            {renderSquare(8)}
-          </div>
-        </div>
-
-        <button className="reset-button" onClick={resetGame}>
-          Играть снова
-        </button>
       </div>
     );
   }
 
   // Экран ничьей
   if (gameOver && !winner) {
+    const oppositeSymbol = playerSymbol === 'X' ? 'O' : 'X';
     return (
-      <div className="game">
-        <div className="game-header">
-          <h1>Крестики-нолики</h1>
-          <div className="player-info">
-            Вы играете за: <span className="player-symbol">{playerSymbol === 'X' ? <img src={xImage} alt="X" className="info-symbol-image" /> : <img src={oImage} alt="O" className="info-symbol-image" />}</span>
+      <div className="game draw-screen">
+        <div className="draw-container">
+          <h1 className="draw-title">Ничья!</h1>
+          <div className="draw-subtitle">
+            <p>Равная борьба! 🤝</p>
+            <p>Попробуйте ещё раз, чтобы определить победителя</p>
+          </div>
+          <div className="buttons-container">
+            <button className="play-again-button" onClick={resetGame}>
+              Играть ещё
+            </button>
+            <button className="play-as-symbol-button" onClick={resetGameWithOppositeSymbol}>
+              Сыграть за <img src={oppositeSymbol === 'X' ? xImage : oImage} alt={oppositeSymbol} className="button-symbol-image" />
+            </button>
           </div>
         </div>
-
-        <div className="status">Ничья! 🤝</div>
-
-        <div className="board">
-          <div className="board-row">
-            {renderSquare(0)}
-            {renderSquare(1)}
-            {renderSquare(2)}
-          </div>
-          <div className="board-row">
-            {renderSquare(3)}
-            {renderSquare(4)}
-            {renderSquare(5)}
-          </div>
-          <div className="board-row">
-            {renderSquare(6)}
-            {renderSquare(7)}
-            {renderSquare(8)}
-          </div>
-        </div>
-
-        <button className="reset-button" onClick={resetGame}>
-          Играть снова
-        </button>
       </div>
     );
   }
@@ -325,7 +322,7 @@ const TicTacToe = () => {
         </div>
       </div>
 
-      <div className="status">{getStatus()}</div>
+      {/* <div className="status">{getStatus()}</div> */}
 
       <div className="board">
         <div className="board-row">
