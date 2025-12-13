@@ -55,7 +55,7 @@ async def win(game_result: GameResult):
         raise HTTPException(status_code=500, detail="Telegram bot token not configured")
 
     promocode = generate_promocode()
-    message = f"*Поздравляю с победой\\!*\n\nВаш промокод: `{promocode}`"
+    message = f"*Поздравляю с победой! Ваш промокод: `{promocode}`"
 
     try:
         result = await send_telegram_message(game_result.chat_id, message)
