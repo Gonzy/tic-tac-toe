@@ -4,7 +4,6 @@ services:
       - "${BACKEND_PORT:-8000}:8000"
     env_file:
       - ../infra/envs/backend.env
-      - ../infra/envs/backend.prod.env
     restart: unless-stopped
 
   bot:
