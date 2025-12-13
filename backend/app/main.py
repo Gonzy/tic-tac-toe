@@ -48,7 +48,7 @@ async def send_telegram_message(chat_id: int, text: str) -> Dict:
         )
         return response.json()
 
-@app.post("/win")
+@app.post("/api/win")
 async def win(game_result: GameResult):
     """Обрабатывает победу игрока"""
     if not BOT_TOKEN:
@@ -63,7 +63,7 @@ async def win(game_result: GameResult):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to send message: {str(e)}")
 
-@app.post("/lose")
+@app.post("/api/lose")
 async def lose(game_result: GameResult):
     """Обрабатывает поражение игрока"""
     if not BOT_TOKEN:

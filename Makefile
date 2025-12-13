@@ -47,9 +47,13 @@ prod-restart-frontend:
 # Build frontend and copy to volume
 prod-build-frontend:
 	@echo "Сборка фронтенда для продакшена..."
-	docker compose --env-file .env -f infra/docker-compose.base.yml -f infra/docker-compose.prod.yml up --build frontend
-	docker compose --env-file .env -f infra/docker-compose.base.yml -f infra/docker-compose.prod.yml rm -f frontend
-	@echo "Фронтенд собран и готов для развертывания"
+	cd frontend && docker build -f Dockerfile.prod -t tic-tac-toe-frontend-build .
+	@echo "Копирование собранных файлов из контейнера..."
+	mkdir -p build
+	docker create --name frontend-temp tic-tac-toe-frontend-build
+	docker cp frontend-temp:/build/. build/
+	docker rm frontend-temp
+	@echo "Фронтенд собран и скопирован в директорию build"
 
 # Deploy nginx configuration (for manual execution on VPS)
 prod-deploy-nginx:

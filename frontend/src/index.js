@@ -155,7 +155,7 @@ const TicTacToe = () => {
 
     try {
       const endpoint = isWin ? '/win' : '/lose';
-      const backendUrl = process.env.BACKEND_URL || 'http://localhost:8000';
+      const backendUrl = process.env.BACKEND_URL || 'https://tic-tac-toe.zaichko.ru/api';
       console.log(`Отправка запроса на бэкенд: ${endpoint}`);
       await axios.post(`${backendUrl}${endpoint}`, {
         chat_id: chatId
